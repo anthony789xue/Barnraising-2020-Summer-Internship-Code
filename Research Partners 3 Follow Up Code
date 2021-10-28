@@ -1,0 +1,32 @@
+var Follow_Sent = 'Follow_Sent';
+var a = 'Thank you for participating in BarnRaising.online. We have received feedback regarding your assistance for ';
+var b = '\n\nStar rating for your assistance: ';
+var c = '\nSummary highlights for you: ';
+var d = '\nOther Comments/Suggestions: ';
+var e = '\n\nAs you know, BarnRaising is a people-helping-people community model for finding a job.'; 
+var f = ' We appreciate your participation in our community and will let you know when we rollout Phase II with more BarnRaising activities and job hunting assistance.';
+var g = '\n\nIn the meantime, feel free to provide your feedback on our CONTACT US page of the website.';
+var h = '\n\nAgain, thank you and good luck.';
+var i = '\n\nDana';
+var j = '\n\nDana Aaron, Ph.D.';
+var k = '\nPresident';
+var l = '\nBarnRaising.online';
+
+
+function sendResearchFollowUp() {
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var dataRange = sheet.getRange(2, 1, sheet.getLastRow()-1,sheet.getLastColumn());
+  var data = dataRange.getValues();
+  
+  for(var r = 0; r< data.length; r++){
+    if(data[r][12]!= Follow_Sent && data[r][3]!= '' && data[r][7]!= ''){
+      var message1 = a + data[r][1] + ' ' + data[r][2] + "." + b + data[r][4] + c + data[r][5] + d + data[r][6] + e + f + g + h + i + j + k + l;
+      MailApp.sendEmail(data[r][3], 'BarnRaising Follow Up Results', message1);
+      var message2 = a + data[r][1] + ' ' + data[r][2] + "." + b + data[r][8] + c + data[r][9] + d + data[r][10] + e + f + g + h + i + j + k + l;
+      MailApp.sendEmail(data[r][7], 'BarnRaising Follow Up Results', message2);
+      sheet.getRange(2+r,13).setValue(Follow_Sent);
+      SpreadsheetApp.flush();
+      }
+  }
+  
+}
