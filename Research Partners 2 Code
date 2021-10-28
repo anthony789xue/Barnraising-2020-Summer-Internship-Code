@@ -1,0 +1,67 @@
+var Email3_Sent = 'Email3_Sent';
+var Email4_Sent = 'Email4_Sent';
+
+var a = 'We are glad that you have joined the BarnRaising community of people-helping-people. Finding a job begins with the basics - understanding yourself, knowing what you';
+var b = ' want and what you are qualified for, presenting yourself well (verbally and in writing), and mastering the tools & techniques of the job search.';
+var c = '\n\nBarnRaising is connecting you with another member who would also like some help finding a job.';
+var d = '\n\nPlease contact ';
+var e = ' by email ';
+var f = ' to schedule a time to meet online (usually by Zoom or Google Meet) to discuss and understand what job each of you is looking for.';
+var g = ' In short, this BarnRaising activity should have each person in the Research Partners looking for job leads for each other.';
+var h = ' We estimate that this activity will continue for two days of follow-up after you meet.';
+var i = '\n\nIn three (3) days, we will be sending you a follow-up email to request: (1) your brief summary highlights for the person you helped by finding them job leads;';
+var j = ' and (2) a star rating for the assistance that you received from the person looking for job leads for you.';
+var k = '\n\nThank you for participating in BarnRaising . . . and good luck.';
+var l = '\n\nDana Aaron, Ph.D.';
+var m = '\nPresident';
+var n = '\nBarnRaising.online';
+
+var o = 'We hope that you have met with ';
+var p = ' for your "Research Partners." In addition, we hope that the job leads that you gave and received were helpful.';
+var q = '\n\nPlease complete the following very briefly. Thank you.';
+var ro = '\n\nhttps://docs.google.com/forms/d/e/1FAIpQLSffeo6UBZZ4CZdZp7seK8j5_wYfO3wfjb5WycY2YRe1GrnwKA/viewform?usp=sf_link';
+var so = '\n\nOnce you have submitted this form, you are welcome to sign-up again for “Research Partners" or "One-on-One Assistance.”';
+var t = '\n\nThank you for participating in BarnRaising.  We will let you know when Phase II is available to you with additional activities and job hunting help.';
+var u = '\n\nIn the meantime, continued good luck with your job search.';
+
+function sendEmail3() {
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var dataRange = sheet.getRange(2, 1, sheet.getLastRow()-1,sheet.getLastColumn());
+  var data = dataRange.getValues();
+  
+   for(var r = 0; r< data.length-1; r++){
+    for(var s = r+1; s<data.length; s++){
+      if(data[r][12] != Email3_Sent && data[s][12] != Email3_Sent && data[r][3]!=''&& data[s][3]!=''&& data[r][7] == data[s][7]){
+          var message1 = a + b + c + d + data[s][1] + " " + data[s][2] + e + data[s][3] + f + g + h + i + j + k + l + m + n;
+          var message2 = a + b + c + d + data[r][1] + " " + data[r][2] + e + data[r][3] + f + g + h + i + j + k + l + m + n;
+          MailApp.sendEmail(data[r][3], 'BarnRaising Research Partners for 2 Matching', message1);
+          MailApp.sendEmail(data[s][3], 'BarnRaising Research Partners for 2 Matching', message2);
+          sheet.getRange(2+r,13).setValue(Email3_Sent);
+          sheet.getRange(2+s,13).setValue(Email3_Sent);
+          sheet.getRange(2+r,10).setValue(data[s][1]);
+          sheet.getRange(2+r,11).setValue(data[s][2]);
+          sheet.getRange(2+r,12).setValue(data[s][3]);
+          sheet.getRange(2+s,10).setValue(data[r][1]);
+          sheet.getRange(2+s,11).setValue(data[r][2]); 
+          sheet.getRange(2+s,12).setValue(data[r][3]);
+          SpreadsheetApp.flush();
+          }  
+        
+    }
+  }
+ }
+
+function sendEmail4() {
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var dataRange = sheet.getRange(2, 1, sheet.getLastRow()-1,sheet.getLastColumn());
+  var data = dataRange.getValues();
+
+  for(var r = 0; r<data.length; r++){
+    if(data[r][15].valueOf() == data[0][16].valueOf() && data[r][13]!= Email4_Sent && data[r][12] == Email3_Sent && data[r][3]!=''){
+       var message3 = o + data[r][9] + ' ' + data[r][10] + ' ' + data[r][11] + p + q + ro + so + t + u + l + m + n;
+       MailApp.sendEmail(data[r][3], 'BarnRaising Research Partners for 2 Follow Up', message3);
+       sheet.getRange(2+r,14).setValue(Email4_Sent);
+       SpreadsheetApp.flush();
+    }
+  }
+}
