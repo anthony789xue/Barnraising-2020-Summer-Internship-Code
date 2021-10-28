@@ -1,0 +1,65 @@
+var Email1_Sent = 'Email1_Sent';
+var Email2_Sent = 'Email2_Sent';
+var a = 'We are glad that you have joined the BarnRaising community of people-helping-people. Finding a job begins with the basics - understanding yourself, knowing what you';
+var b = ' want and what you are qualified for, presenting yourself well (verbally and in writing), and mastering the tools & techniques of the job search.';
+var c = '\n\nBarnRaising is pairing you up with another member who would also like some help finding a job.';
+var d = '\n\nPlease contact ';
+var e = ' by email ';
+var f = ' to schedule a time to meet online (usually by Zoom or Google Meet) to discuss and understand where both of you would each like a "fresh eyes" perspective (in other words, a second opinion).';
+var g = ' It is now in your hands to give help and get help through One-on-One Assistance.';
+var h = '\n\nIn three (3) days, we will be sending you a follow-up email to request: (1) your brief summary highlights for the person you helped, and (2) a star rating for the assistance that you received.';  
+var i = '\n\nThank you for participating in BarnRaising . . . and good luck.'; 
+var j = '\n\nDana Aaron, Ph.D.';
+var k = '\nPresident';
+var l = '\nBarnRaising.online';
+
+var m = 'We hope that you have met with ';
+var n = ' for your One-on-One Assistance. In addition, we hope that the assistance that you gave and received was helpful.';
+var o = '\n\nPlease complete the following very briefly. Thank you.';
+var p = '\n\nhttps://docs.google.com/forms/d/e/1FAIpQLSffeo6UBZZ4CZdZp7seK8j5_wYfO3wfjb5WycY2YRe1GrnwKA/viewform?usp=sf_link';
+var q = '\n\nOnce you have submitted this form, you are welcome to sign-up again for "One-on-One Assistance" or "Research Partners."';
+var ro = '\n\nThank you for participating in BarnRaising. We will let you know when Phase II is available to you with additional activities and job hunting help.';
+var so = '\n\nIn the meantime, continued good luck with your job search.';
+ 
+function sendEmail1() {
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var dataRange = sheet.getRange(2, 1, sheet.getLastRow()-1,sheet.getLastColumn());
+  var data = dataRange.getValues();
+  
+   for(var r = 0; r< data.length-1; r++){
+    for(var s = r+1; s<data.length; s++){
+      if(data[r][11] != Email1_Sent && data[s][11] != Email1_Sent && data[r][3]!=''&& data[s][3]!=''&& data[r][6] == data[s][6]){
+          var message1 = a + b + c + d + data[s][1] + " " + data[s][2] + e + data[s][3] + f + g + h + i + j + k + l;
+          var message2 = a + b + c + d + data[r][1] + " " + data[r][2] + e + data[r][3] + f + g + h + i + j + k + l;
+          MailApp.sendEmail(data[r][3], 'BarnRaising One on One Assistance Matching', message1);
+          MailApp.sendEmail(data[s][3], 'BarnRaising One on One Assistance Matching', message2);
+          sheet.getRange(2+r,12).setValue(Email1_Sent);
+          sheet.getRange(2+s,12).setValue(Email1_Sent);
+          sheet.getRange(2+r,9).setValue(data[s][1]);
+          sheet.getRange(2+r,10).setValue(data[s][2]);
+          sheet.getRange(2+r,11).setValue(data[s][3]);
+          sheet.getRange(2+s,9).setValue(data[r][1]);
+          sheet.getRange(2+s,10).setValue(data[r][2]);
+          sheet.getRange(2+s,11).setValue(data[r][3]);
+          SpreadsheetApp.flush();
+          }  
+        
+    }
+  }
+ }
+
+function sendEmail2() {
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var dataRange = sheet.getRange(2, 1, sheet.getLastRow()-1,sheet.getLastColumn());
+  var data = dataRange.getValues();
+
+  
+  for(var r = 0; r<data.length; r++){
+    if(data[r][14].valueOf() == data[0][15].valueOf() && data[r][12]!= Email2_Sent && data[r][11] == Email1_Sent && data[r][3]!=''){
+        var message3 = m + data[r][8] + ' ' + data[r][9] + ' ' + data[r][10] +  n + o + p + q + ro + so + j + k + l;
+        MailApp.sendEmail(data[r][3], 'BarnRaising One on One Follow Up', message3);
+        sheet.getRange(2+r,13).setValue(Email2_Sent);
+        SpreadsheetApp.flush();
+    }
+  }
+}
